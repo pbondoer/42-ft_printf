@@ -8,6 +8,7 @@ extra things which I found to be rather useful.
 Extra conversions:
 
 | Name		| Conversion	| Example output	|
+| --------- | ------------- | ----------------- |
 | Binary	| b				| 00001001			|
 
 ## Compiling
