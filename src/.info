@@ -1,0 +1,21 @@
+parsing format:
+
+1) map format to arg types with enum, add conversions to list
+
+  arg 0 -> int
+  arg 1 -> char *
+  arg 2 -> NULL
+  arg 3 -> int
+
+2) populate list of args with corresponding data (list)
+
+  arg 0 -> 42
+  arg 1 -> "Hello world"
+  arg 2 -> NULL
+  arg 3 -> 123
+
+
+3) start printing out text to a string in memory (sort-of-buffer) unless it
+exceeds a certain amount of memory
+
+4) once the string is entirely populated, perform a write of the string
