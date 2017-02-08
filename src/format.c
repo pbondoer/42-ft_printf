@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 03:35:56 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/02/08 07:46:00 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/02/08 23:09:13 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,20 @@
 static int			handle_access(t_pf_param *param, const char *str, size_t *i)
 {
 	int access;
+	int t;
 
+	t = *i;
 	if (!ft_isdigit(str[*i]))
 		return (0);
 	if (pf_atoi(str, 0, &access, i) || str[*i] != '$')
+	{
+		if (*i - t == 1 && str[t] == '0')
+		{
+			*i = t;
+			return (0);
+		}
 		return (1);
+	}
 	(*i)++;
 	param->access = access;
 	return (0);
