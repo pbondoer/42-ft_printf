@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 03:35:56 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/02/08 23:09:13 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/05/01 02:31:19 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,8 @@ static int			handle_access(t_pf_param *param, const char *str, size_t *i)
 		return (0);
 	if (pf_atoi(str, 0, &access, i) || str[*i] != '$')
 	{
-		if (*i - t == 1 && str[t] == '0')
-		{
-			*i = t;
-			return (0);
-		}
-		return (1);
+		*i = t;
+		return (0);
 	}
 	(*i)++;
 	param->access = access;
@@ -60,7 +56,7 @@ static int			handle_flags(t_pf_param *param, const char *str, size_t *i)
 			return (0);
 		(*i)++;
 	}
-	return (1);
+	return (1); // too many flags
 }
 
 static int			handle_width(t_pf_param *param, const char *str, size_t *i)
@@ -153,10 +149,11 @@ t_pf_param			get_param(const char *str, size_t start, size_t len)
 	param = pf_param(start, len);
 	while (i < 6)
 	{
+		printf(" -> %s at %zu\n", error[i], pos);
 		if ((*handle[i])(&param, str, &pos))
 		{
 			//error
-			printf(" --> error parsing %s (%zu)\n", error[i], i);
+			printf(" --> error parsing %s at %zu\n", error[i], pos);
 			break;
 		}
 		i++;
