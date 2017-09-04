@@ -128,12 +128,13 @@ static int			handle_conversion(t_pf_param *param, const char *str, size_t *i)
 	if (pf_is_conversion(str[*i]))
 	{
 		param->conversion = str[*i];
+		(*i)++;
 		return (0);
 	}
 	return (1);
 }
 
-t_pf_param			get_param(const char *str, size_t start, size_t len)
+t_pf_param			get_param(const char *str)
 {
 	static int		(*handle[6])(t_pf_param *, const char *, size_t *) = {
 						handle_access, handle_flags, handle_width,
@@ -146,7 +147,7 @@ t_pf_param			get_param(const char *str, size_t start, size_t len)
 
 	i = 0;
 	pos = 0;
-	param = pf_param(start, len);
+	param = pf_param();
 	while (i < 6)
 	{
 		printf(" -> %s at %zu\n", error[i], pos);
@@ -162,27 +163,43 @@ t_pf_param			get_param(const char *str, size_t start, size_t len)
 	//end
 }
 
-void				parse_format(const char *str)
+t_pf_argument		*get_argument(const char *str, size_t start, size_t len)
+{
+	t_pf_argument	*arg = (t_pf_argument) {
+		.position = start, .length = len, .ptr = NULL, .next = NULL };
+
+	if (*str == '%')
+		arg.ptr = get_param(str); // TODO: transform
+	else
+		arg.ptr = str;
+}
+
+/*
+** Parse a format string
+** Returns a pointer to a linked argument list and the count
+*/
+
+t_pf_argument		*parse_format(const char *str, size_t *count)
 {
 	size_t i;
 	size_t start;
 	size_t len;
 	t_pf_param	param;
 
+	*count = 0;
 	i = 0;
 	while (str[i])
 	{
-		i++;
-		if (str[i - 1] == '%' && str[i])
+		start = i;
+		if (str[i] == '%' && str[i + 1])
 		{
-			start = i;
+			i++;
 			while (str[i] && pf_is_valid(str[i]) && !pf_is_conversion(str[i]))
 				i++;
-			if (!pf_is_valid(str[i]))
-				continue;
-			i++;
-			len = i - start;
-			param = get_param(str + start, start, len);
+			//if (!pf_is_valid(str[i]))
+			//	continue; // TODO: turn it into a string
+
+			/*
 			printf("parameter (start %zu len %zu): \"%s\"\n", start, len,
 				ft_strsub(str, start, len));
 			printf("access: %d\n", param.access);
@@ -192,19 +209,28 @@ void				parse_format(const char *str)
 			printf("precision: %d\n", param.precision);
 			printf("modifier: %d\n", param.modifier);
 			printf("conversion: %c\n", param.conversion);
+			*/
 		}
+		else
+			while (str[i] && str[i] != '%')
+				i++;
+
+		len = i - start;
+		//param = get_param(str + start, start, len);
+		(*count)++;
 	}
+
+	return (param);
 }
 
 /*
 ** Creates a printf param
 */
 
-inline t_pf_param	pf_param(const size_t pos, const size_t len)
+inline t_pf_param	pf_param()
 {
 	return ((t_pf_param){
 			.str = (t_pf_string){.str = NULL, .length = 0},
-			.arg = (t_pf_argument){.position = pos, .length = len},
 			.access = 0,
 			.flags = PF_FLAG_NONE,
 			.field_width = 0,

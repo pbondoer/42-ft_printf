@@ -30,16 +30,26 @@
 ** Used when parsing formats and when doing the final substitution.
 */
 
+typedef struct	s_pf_handle
+{
+	char		conversion;
+	void		*handle();
+}				t_pf_handle;
+
 typedef enum	e_pf_modifier
 {
 	NONE = 0, L = 1, H = 2, J = 3, Z = 4, LL = 5, HH = 6
 }				t_pf_modifier;
 
-typedef struct	s_pf_argument
+typedef struct	s_pf_argument t_pf_argument;
+
+struct			s_pf_argument
 {
-	size_t		position;
-	size_t		length;
-}				t_pf_argument;
+	size_t			position;
+	size_t			length;
+	void			*ptr;
+	t_pf_argument	*next;
+};
 
 typedef struct	s_pf_string
 {
@@ -50,7 +60,6 @@ typedef struct	s_pf_string
 typedef struct	s_pf_param
 {
 	t_pf_string		str;
-	t_pf_argument	arg;
 	int				access;
 	int				flags;
 	int				field_width;

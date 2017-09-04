@@ -1,0 +1,14 @@
+printf
+------
+
+ -> Loop through the string, find conversions
+ -> Deduce a map of
+   -> [strings] -> length
+   -> [conversions] -> transform -> length
+ -> Create a string large enough to hold the entire map
+ -> Loop through the map and append the transformed strings
+
+Possible optimizations
+----------------------
+
+ * Break the loops if the string gets too large
