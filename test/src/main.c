@@ -13,10 +13,19 @@
 #include "ft_printf.h"
 #include <stdio.h>
 
+void	test(char **argv, ...)
+{
+	va_list list;
+
+	va_start(list, argv);
+	parse_format(argv[1], list);
+	va_end(list);
+}
+
 int		main(int argc, char **argv)
 {
 	if (argc < 2)
 		return (1);
-	parse_format(argv[1]);
+	test(argv, "salut", "bonjour", "bonsoir");
 	return (0);
 }

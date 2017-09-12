@@ -26,36 +26,23 @@
 # define PF_FLAG_SPACE 16
 # define PF_FLAG_APOSTROPHE 32
 
-/*
-** Used when parsing formats and when doing the final substitution.
-*/
-
-typedef struct	s_pf_handle
+typedef struct	s_pf_string
 {
-	char		conversion;
-	void		(*handle)();
-}				t_pf_handle;
+	const char	*str;
+	size_t		length;
+}				t_pf_string;
 
 typedef enum	e_pf_modifier
 {
 	NONE = 0, L = 1, H = 2, J = 3, Z = 4, LL = 5, HH = 6
 }				t_pf_modifier;
 
-typedef struct	s_pf_argument t_pf_argument;
-
-struct			s_pf_argument
+typedef struct	s_pf_argument
 {
 	size_t			position;
 	size_t			length;
-	const void		*ptr;
-	t_pf_argument	*next;
-};
-
-typedef struct	s_pf_string
-{
-	const char	*str;
-	size_t		length;
-}				t_pf_string;
+	t_pf_string		str;
+}				t_pf_argument;
 
 typedef struct	s_pf_param
 {
@@ -67,15 +54,28 @@ typedef struct	s_pf_param
 	int				precision;
 	t_pf_modifier	modifier;
 	char			conversion;
+	int				error;
 }				t_pf_param;
 
+/*
+** Used when parsing formats and when doing the final substitution.
+*/
+
+typedef struct	s_pf_handle
+{
+	char		conversion;
+	t_pf_string	(*handle)(t_pf_param, va_list);
+}				t_pf_handle;
+
 int				ft_printf(const char *format, ...);
-t_pf_argument	*parse_format(const char *str);
+t_pf_argument	*parse_format(const char *str, va_list list);
 int				pf_is_conversion(const char c);
 int				pf_is_modifier(const char c);
 int				pf_is_flag(const char c);
 int				pf_is_valid(const char c);
-t_pf_param		*pf_param(const char *str, const size_t len);
+t_pf_param		pf_param(const char *str, const size_t len);
+t_pf_string		pf_string(const char *str, size_t len);
+t_pf_string		pf_transform(t_pf_param param, va_list list);
 
 /*
 ** Helper functions

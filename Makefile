@@ -21,7 +21,8 @@ TEST_DIR := ./test
 # src / obj files
 SRC		:= check.c \
 		   format.c \
-		   atoi.c
+		   atoi.c \
+		   replace.c
 
 OBJ		:= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 

@@ -134,14 +134,14 @@ static int			handle_conversion(t_pf_param *param, const char *str, size_t *i)
 	return (1);
 }
 
-t_pf_param			*get_param(const char *str, size_t len)
+t_pf_param			get_param(const char *str, size_t len)
 {
 	static int		(*handle[6])(t_pf_param *, const char *, size_t *) = {
 						handle_access, handle_flags, handle_width,
 						handle_precision, handle_modifier, handle_conversion};
 	static char		*error[6] = {"access", "flags", "width", "precision",
 								"modifier", "conversion"};
-	t_pf_param		*param;
+	t_pf_param		param;
 	size_t			i;
 	size_t			pos;
 
@@ -151,20 +151,36 @@ t_pf_param			*get_param(const char *str, size_t len)
 	while (i < 6)
 	{
 		printf(" -> %s at %zu\n", error[i], pos);
-		if ((*handle[i])(param, str + 1, &pos))
+		if ((*handle[i])(&param, str + 1, &pos))
 		{
 			//error
 			printf(" --> error parsing %s at %zu\n", error[i], pos);
+			param.error = 1;
 			break;
 		}
 		i++;
 	}
+
+	printf("\nparameter: \"%s\"\n", ft_strsub(str, 0, len));
+	printf("access: %d\n", param.access);
+	printf("flags: %d -> ", param.flags);
+	if ((param.flags & PF_FLAG_HASH) != 0) printf("HASH ");
+	if ((param.flags & PF_FLAG_ZERO) != 0) printf("ZERO ");
+	if ((param.flags & PF_FLAG_MINUS) != 0) printf("MINUS ");
+	if ((param.flags & PF_FLAG_PLUS) != 0) printf("PLUS ");
+	if ((param.flags & PF_FLAG_SPACE) != 0) printf("SPACE ");
+	if ((param.flags & PF_FLAG_APOSTROPHE) > 0) printf("APOSTROPHE ");
+	printf("\nwidth: %d\n", param.field_width);
+	printf("width access: %d\n", param.field_width_access);
+	printf("precision: %d\n", param.precision);
+	printf("modifier: %d\n", param.modifier);
+	printf("conversion: %c\n", param.conversion);
+
 	return (param);
-	//end
 }
 
 t_pf_argument		*get_argument(const char *str, size_t start, size_t len,
-									int is_valid)
+									int is_valid, va_list list)
 {
 	t_pf_argument	*arg;
 
@@ -174,9 +190,9 @@ t_pf_argument		*get_argument(const char *str, size_t start, size_t len,
 	arg->position = start;
 	arg->length = len;
 	if (*str == '%' && is_valid)
-		arg->ptr = get_param(str, len);
+		arg->str = pf_transform(get_param(str, len), list);
 	else
-		arg->ptr = str;
+		arg->str = pf_string(str, len);
 	return (arg);
 }
 
@@ -185,7 +201,7 @@ t_pf_argument		*get_argument(const char *str, size_t start, size_t len,
 ** Returns a pointer to a linked argument list and the count
 */
 
-t_pf_argument		*parse_format(const char *str)
+t_pf_argument		*parse_format(const char *str, va_list list)
 {
 	size_t			i;
 	size_t			start;
@@ -204,37 +220,21 @@ t_pf_argument		*parse_format(const char *str)
 			while (str[i] && pf_is_valid(str[i]) && !pf_is_conversion(str[i]))
 				i++;
 			valid = pf_is_valid(str[i]);
-			if (!valid)
+			if (valid)
+				i++;
+			else
 				while (str[i] && str[i] != '%')
 					i++;
-			else
-				i++;
 		}
 		else
 			while (str[i] && str[i] != '%')
 				i++;
 
 		len = i - start;
-		arg = get_argument(str + start, start, len, valid);
-		if (valid)
-		{
-			t_pf_param param = *(t_pf_param *)arg->ptr;
-			printf("parameter (start %zu len %zu): \"%s\"\n", start, len,
-				ft_strsub(str, start, len));
-			printf("access: %d\n", param.access);
-			printf("flags: %d - ", param.flags);
-			if ((param.flags & PF_FLAG_HASH) != 0) printf("HASH ");
-			if ((param.flags & PF_FLAG_ZERO) != 0) printf("ZERO ");
-			if ((param.flags & PF_FLAG_MINUS) != 0) printf("MINUS ");
-			if ((param.flags & PF_FLAG_PLUS) != 0) printf("PLUS ");
-			if ((param.flags & PF_FLAG_SPACE) != 0) printf("SPACE ");
-			if ((param.flags & PF_FLAG_APOSTROPHE) > 0) printf("APOSTROPHE ");
-			printf("\nwidth: %d\n", param.field_width);
-			printf("width access: %d\n", param.field_width_access);
-			printf("precision: %d\n", param.precision);
-			printf("modifier: %d\n", param.modifier);
-			printf("conversion: %c\n", param.conversion);
-		}
+		arg = get_argument(str + start, start, len, valid, list);
+		printf("\nRESULT: %s", ft_strsub(arg->str.str, 0, arg->str.length));
+		if (!valid)
+			printf("\n---> string from start %zu len %zu\n\n", start, len);
 	}
 
 	return (arg);
@@ -245,14 +245,29 @@ t_pf_argument		*parse_format(const char *str)
 ** NOTE: All params are 0 at the start so no init is nescesary
 */
 
-inline t_pf_param	*pf_param(const char *str, size_t len)
+inline t_pf_param	pf_param(const char *str, size_t len)
 {
-	t_pf_param	*param;
+	t_pf_param	param;
 
-	param = ft_memalloc(sizeof(t_pf_param));
-	if (param == NULL)
-		return (NULL);
-	param->str.str = str;
-	param->str.length = len;
+	param = (t_pf_param) {
+		.str = (t_pf_string){ .str = str, .length = len },
+		.access = 0,
+		.flags = 0,
+		.field_width = 0,
+		.field_width_access = 0,
+		.precision = 0,
+		.modifier = NONE,
+		.conversion = 0,
+		.error = 0
+	};
+
 	return (param);
+}
+
+inline t_pf_string	pf_string(const char *str, size_t len)
+{
+	return ((t_pf_string) {
+		.str = str,
+		.length = len
+	});
 }
