@@ -33,7 +33,7 @@
 typedef struct	s_pf_handle
 {
 	char		conversion;
-	void		*handle();
+	void		(*handle)();
 }				t_pf_handle;
 
 typedef enum	e_pf_modifier
@@ -47,13 +47,13 @@ struct			s_pf_argument
 {
 	size_t			position;
 	size_t			length;
-	void			*ptr;
+	const void		*ptr;
 	t_pf_argument	*next;
 };
 
 typedef struct	s_pf_string
 {
-	char		*str;
+	const char	*str;
 	size_t		length;
 }				t_pf_string;
 
@@ -70,12 +70,12 @@ typedef struct	s_pf_param
 }				t_pf_param;
 
 int				ft_printf(const char *format, ...);
-void			parse_format(const char *str);
+t_pf_argument	*parse_format(const char *str);
 int				pf_is_conversion(const char c);
 int				pf_is_modifier(const char c);
 int				pf_is_flag(const char c);
 int				pf_is_valid(const char c);
-t_pf_param		pf_param(const size_t pos, const size_t len);
+t_pf_param		*pf_param(const char *str, const size_t len);
 
 /*
 ** Helper functions

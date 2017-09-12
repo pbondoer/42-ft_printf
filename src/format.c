@@ -34,7 +34,7 @@ static int			handle_flags(t_pf_param *param, const char *str, size_t *i)
 {
 	char c;
 
-	while (*i < param->arg.length)
+	while (*i < param->str.length)
 	{
 		c = str[*i];
 		if (pf_is_flag(c))
@@ -134,24 +134,24 @@ static int			handle_conversion(t_pf_param *param, const char *str, size_t *i)
 	return (1);
 }
 
-t_pf_param			get_param(const char *str)
+t_pf_param			*get_param(const char *str, size_t len)
 {
 	static int		(*handle[6])(t_pf_param *, const char *, size_t *) = {
 						handle_access, handle_flags, handle_width,
 						handle_precision, handle_modifier, handle_conversion};
 	static char		*error[6] = {"access", "flags", "width", "precision",
 								"modifier", "conversion"};
-	t_pf_param		param;
+	t_pf_param		*param;
 	size_t			i;
 	size_t			pos;
 
 	i = 0;
 	pos = 0;
-	param = pf_param();
+	param = pf_param(str, len);
 	while (i < 6)
 	{
 		printf(" -> %s at %zu\n", error[i], pos);
-		if ((*handle[i])(&param, str, &pos))
+		if ((*handle[i])(param, str + 1, &pos))
 		{
 			//error
 			printf(" --> error parsing %s at %zu\n", error[i], pos);
@@ -163,15 +163,21 @@ t_pf_param			get_param(const char *str)
 	//end
 }
 
-t_pf_argument		*get_argument(const char *str, size_t start, size_t len)
+t_pf_argument		*get_argument(const char *str, size_t start, size_t len,
+									int is_valid)
 {
-	t_pf_argument	*arg = (t_pf_argument) {
-		.position = start, .length = len, .ptr = NULL, .next = NULL };
+	t_pf_argument	*arg;
 
-	if (*str == '%')
-		arg.ptr = get_param(str); // TODO: transform
+	arg = ft_memalloc(sizeof(t_pf_argument));
+	if (arg == NULL)
+		return (NULL);
+	arg->position = start;
+	arg->length = len;
+	if (*str == '%' && is_valid)
+		arg->ptr = get_param(str, len);
 	else
-		arg.ptr = str;
+		arg->ptr = str;
+	return (arg);
 }
 
 /*
@@ -179,64 +185,74 @@ t_pf_argument		*get_argument(const char *str, size_t start, size_t len)
 ** Returns a pointer to a linked argument list and the count
 */
 
-t_pf_argument		*parse_format(const char *str, size_t *count)
+t_pf_argument		*parse_format(const char *str)
 {
-	size_t i;
-	size_t start;
-	size_t len;
-	t_pf_param	param;
+	size_t			i;
+	size_t			start;
+	size_t			len;
+	t_pf_argument	*arg;
+	int				valid;
 
-	*count = 0;
 	i = 0;
 	while (str[i])
 	{
 		start = i;
+		valid = 0;
 		if (str[i] == '%' && str[i + 1])
 		{
 			i++;
 			while (str[i] && pf_is_valid(str[i]) && !pf_is_conversion(str[i]))
 				i++;
-			//if (!pf_is_valid(str[i]))
-			//	continue; // TODO: turn it into a string
-
-			/*
-			printf("parameter (start %zu len %zu): \"%s\"\n", start, len,
-				ft_strsub(str, start, len));
-			printf("access: %d\n", param.access);
-			printf("flags: %d\n", param.flags);
-			printf("width: %d\n", param.field_width);
-			printf("width access: %d\n", param.field_width_access);
-			printf("precision: %d\n", param.precision);
-			printf("modifier: %d\n", param.modifier);
-			printf("conversion: %c\n", param.conversion);
-			*/
+			valid = pf_is_valid(str[i]);
+			if (!valid)
+				while (str[i] && str[i] != '%')
+					i++;
+			else
+				i++;
 		}
 		else
 			while (str[i] && str[i] != '%')
 				i++;
 
 		len = i - start;
-		//param = get_param(str + start, start, len);
-		(*count)++;
+		arg = get_argument(str + start, start, len, valid);
+		if (valid)
+		{
+			t_pf_param param = *(t_pf_param *)arg->ptr;
+			printf("parameter (start %zu len %zu): \"%s\"\n", start, len,
+				ft_strsub(str, start, len));
+			printf("access: %d\n", param.access);
+			printf("flags: %d - ", param.flags);
+			if ((param.flags & PF_FLAG_HASH) != 0) printf("HASH ");
+			if ((param.flags & PF_FLAG_ZERO) != 0) printf("ZERO ");
+			if ((param.flags & PF_FLAG_MINUS) != 0) printf("MINUS ");
+			if ((param.flags & PF_FLAG_PLUS) != 0) printf("PLUS ");
+			if ((param.flags & PF_FLAG_SPACE) != 0) printf("SPACE ");
+			if ((param.flags & PF_FLAG_APOSTROPHE) > 0) printf("APOSTROPHE ");
+			printf("\nwidth: %d\n", param.field_width);
+			printf("width access: %d\n", param.field_width_access);
+			printf("precision: %d\n", param.precision);
+			printf("modifier: %d\n", param.modifier);
+			printf("conversion: %c\n", param.conversion);
+		}
 	}
 
-	return (param);
+	return (arg);
 }
 
 /*
 ** Creates a printf param
+** NOTE: All params are 0 at the start so no init is nescesary
 */
 
-inline t_pf_param	pf_param()
+inline t_pf_param	*pf_param(const char *str, size_t len)
 {
-	return ((t_pf_param){
-			.str = (t_pf_string){.str = NULL, .length = 0},
-			.access = 0,
-			.flags = PF_FLAG_NONE,
-			.field_width = 0,
-			.field_width_access = 0,
-			.precision = 0,
-			.modifier = 0,
-			.conversion = 0
-		});
+	t_pf_param	*param;
+
+	param = ft_memalloc(sizeof(t_pf_param));
+	if (param == NULL)
+		return (NULL);
+	param->str.str = str;
+	param->str.length = len;
+	return (param);
 }
