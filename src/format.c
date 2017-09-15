@@ -6,11 +6,12 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 03:35:56 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/05/01 02:31:19 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/14 20:24:46 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <unistd.h>
 
 static int			handle_access(t_pf_param *param, const char *str, size_t *i)
 {
@@ -139,8 +140,8 @@ t_pf_param			get_param(const char *str, size_t len)
 	static int		(*handle[6])(t_pf_param *, const char *, size_t *) = {
 						handle_access, handle_flags, handle_width,
 						handle_precision, handle_modifier, handle_conversion};
-	static char		*error[6] = {"access", "flags", "width", "precision",
-								"modifier", "conversion"};
+	//static char		*error[6] = {"access", "flags", "width", "precision",
+	//							"modifier", "conversion"};
 	t_pf_param		param;
 	size_t			i;
 	size_t			pos;
@@ -150,18 +151,19 @@ t_pf_param			get_param(const char *str, size_t len)
 	param = pf_param(str, len);
 	while (i < 6)
 	{
-		printf(" -> %s at %zu\n", error[i], pos);
+		// printf(" -> %s at %zu\n", error[i], pos);
 		if ((*handle[i])(&param, str + 1, &pos))
 		{
 			//error
-			printf(" --> error parsing %s at %zu\n", error[i], pos);
+			// printf(" --> error parsing %s at %zu\n", error[i], pos);
 			param.error = 1;
 			break;
 		}
 		i++;
 	}
 
-	printf("\nparameter: \"%s\"\n", ft_strsub(str, 0, len));
+	/*
+	printf("\nparameter: \"%.*s\"\n", str, len);
 	printf("access: %d\n", param.access);
 	printf("flags: %d -> ", param.flags);
 	if ((param.flags & PF_FLAG_HASH) != 0) printf("HASH ");
@@ -175,6 +177,7 @@ t_pf_param			get_param(const char *str, size_t len)
 	printf("precision: %d\n", param.precision);
 	printf("modifier: %d\n", param.modifier);
 	printf("conversion: %c\n", param.conversion);
+	*/
 
 	return (param);
 }
@@ -197,19 +200,20 @@ t_pf_argument		*get_argument(const char *str, size_t start, size_t len,
 }
 
 /*
-** Parse a format string
-** Returns a pointer to a linked argument list and the count
+** Parse a format string and prints stuff
 */
 
-t_pf_argument		*parse_format(const char *str, va_list list)
+int		pf_parse_format(const char *str, va_list list)
 {
 	size_t			i;
 	size_t			start;
 	size_t			len;
 	t_pf_argument	*arg;
 	int				valid;
+	int				count;
 
 	i = 0;
+	count = 0;
 	while (str[i])
 	{
 		start = i;
@@ -232,12 +236,16 @@ t_pf_argument		*parse_format(const char *str, va_list list)
 
 		len = i - start;
 		arg = get_argument(str + start, start, len, valid, list);
-		printf("\nRESULT: %s", ft_strsub(arg->str.str, 0, arg->str.length));
-		if (!valid)
-			printf("\n---> string from start %zu len %zu\n\n", start, len);
-	}
+		if (arg->str.str && arg->str.length > 0)
+		{
+			write(1, arg->str.str, arg->str.length);
+			count += arg->str.length;
+		}
 
-	return (arg);
+		//if (!valid)
+		//	printf("\n---> string from start %zu len %zu\n\n", start, len);
+	}
+	return (count);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/05 22:22:58 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/02/08 07:41:42 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/14 20:23:36 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,15 @@ typedef struct	s_pf_handle
 	t_pf_string	(*handle)(t_pf_param, va_list);
 }				t_pf_handle;
 
+/*
+** Handlers
+*/
+
+t_pf_string		pf_handle_percent(t_pf_param param, va_list list);
+
 int				ft_printf(const char *format, ...);
-t_pf_argument	*parse_format(const char *str, va_list list);
+int				pf_parse_format(const char *str, va_list list);
+
 int				pf_is_conversion(const char c);
 int				pf_is_modifier(const char c);
 int				pf_is_flag(const char c);

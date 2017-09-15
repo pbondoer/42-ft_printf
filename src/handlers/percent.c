@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   percent.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/05 22:15:40 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/14 20:25:34 by pbondoer         ###   ########.fr       */
+/*   Created: 2017/09/14 18:53:18 by pbondoer          #+#    #+#             */
+/*   Updated: 2017/09/14 20:07:34 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
-int		main(int argc, char **argv)
+t_pf_string		pf_handle_percent(t_pf_param param, va_list list)
 {
-	if (argc < 2)
-		return (1);
-	ft_printf(argv[1], "salut", "bonjour", "bonsoir");
-	return (0);
+	t_pf_string	pf;
+
+	(void)param;
+	(void)list;
+	pf.str = "%";
+	pf.length = 1;
+
+	return (pf);
 }

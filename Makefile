@@ -6,7 +6,7 @@
 #    By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 21:02:30 by pbondoer          #+#    #+#              #
-#    Updated: 2017/02/08 07:11:20 by pbondoer         ###   ########.fr        #
+#    Updated: 2017/09/14 20:58:59 by pbondoer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,12 @@ OBJ_DIR  := ./obj
 TEST_DIR := ./test
 
 # src / obj files
-SRC		:= check.c \
+SRC		:= printf.c \
+		   check.c \
 		   format.c \
 		   atoi.c \
-		   replace.c
+		   replace.c \
+		   handlers/percent.c
 
 OBJ		:= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
@@ -40,6 +42,7 @@ all: $(OBJ_DIR) $(PRINTF_NAME)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)/handlers
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIB_INC) -o $@ -c $<
