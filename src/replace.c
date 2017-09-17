@@ -6,38 +6,31 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/09 01:50:13 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/14 19:18:26 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/17 03:55:47 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static t_pf_string pf_handle_s(t_pf_param param, va_list list)
-{
-	t_pf_string	pf;
-
-	(void)param;
-	pf.str = va_arg(list, char *);
-	pf.length = ft_strlen(pf.str);
-
-	return (pf);
-}
-
 /*
 ** Replaces conversion with string (one param)
 */
 
-t_pf_string pf_transform(t_pf_param param, va_list list)
+#define CONV 5
+
+int			pf_transform(t_pf_param param, va_list list)
 {
-	static t_pf_handle	(handle[2]) = {
-		{ .conversion = 's', .handle = pf_handle_s },
-		{ .conversion = '%', .handle = pf_handle_percent }
+	static t_pf_handle	(handle[CONV]) = {
+		{ .conversion = 's', .handle = pf_handle_string },
+		{ .conversion = 'c', .handle = pf_handle_char },
+		{ .conversion = '%', .handle = pf_handle_percent },
+		{ .conversion = 'x', .handle = pf_handle_hex },
+		{ .conversion = 'X', .handle = pf_handle_hex }
 	};
-	t_pf_string empty;
 	int i;
 
 	i = 0;
-	while (i < 2)
+	while (i < CONV)
 	{
 		if (param.conversion == handle[i].conversion)
 		{
@@ -45,7 +38,5 @@ t_pf_string pf_transform(t_pf_param param, va_list list)
 		}
 		i++;
 	}
-	empty.str = NULL;
-	empty.length = 0;
-	return (empty);
+	return (0);
 }

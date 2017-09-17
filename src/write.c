@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   write.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/05 22:15:40 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/17 06:07:14 by pbondoer         ###   ########.fr       */
+/*   Created: 2017/09/17 01:31:24 by pbondoer          #+#    #+#             */
+/*   Updated: 2017/09/17 02:23:58 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include <unistd.h>
 
-int		main(int argc, char **argv)
+/*
+** TODO: Change this to use a buffer system
+*/
+
+int			pf_write(const char *str, const size_t len)
 {
-	//if (argc < 2)
-	//	return (1);
+	write(1, str, len);
+	return (len);
+}
 
-	(void)argc;
-	(void)argv;
-//	printf(argv[1], "salut", "bonjour", "bonsoir");
-//	printf("\n");
-//	ft_printf(argv[1], "salut", "bonjour", "bonsoir");
-//	ft_printf("\n");
-	ft_printf("%#-08x", 42);
-	return (0);
+int			pf_repeat(const char c, size_t len)
+{
+	size_t i;
+
+	i = 0;
+	while (i < len)
+	{
+		pf_write(&c, 1);
+		i++;
+	}
+	return (len);
 }

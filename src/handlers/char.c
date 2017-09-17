@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   char.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/05 22:15:40 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/17 06:07:14 by pbondoer         ###   ########.fr       */
+/*   Created: 2017/09/17 03:28:28 by pbondoer          #+#    #+#             */
+/*   Updated: 2017/09/17 03:32:53 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
-int		main(int argc, char **argv)
+int			pf_handle_char(t_pf_param param, va_list list)
 {
-	//if (argc < 2)
-	//	return (1);
+	int count;
+	int c;
 
-	(void)argc;
-	(void)argv;
-//	printf(argv[1], "salut", "bonjour", "bonsoir");
-//	printf("\n");
-//	ft_printf(argv[1], "salut", "bonjour", "bonsoir");
-//	ft_printf("\n");
-	ft_printf("%#-08x", 42);
-	return (0);
+	count = 0;
+	c = va_arg(list, int);
+	if ((param.flags & PF_FLAG_MINUS) == 0 && param.width > 1)
+		count += pf_repeat(' ', param.width - 1);
+	count += pf_write((char *)&c, 1);
+	if ((param.flags & PF_FLAG_MINUS) != 0 && param.width > 1)
+		count += pf_repeat(' ', param.width - 1);
+	return (count);
 }

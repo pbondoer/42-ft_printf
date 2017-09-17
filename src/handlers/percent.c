@@ -6,20 +6,22 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 18:53:18 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/14 20:07:34 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/17 03:28:14 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-t_pf_string		pf_handle_percent(t_pf_param param, va_list list)
+int			pf_handle_percent(t_pf_param param, va_list list)
 {
-	t_pf_string	pf;
-
-	(void)param;
 	(void)list;
-	pf.str = "%";
-	pf.length = 1;
+	int count;
 
-	return (pf);
+	count = 0;
+	if ((param.flags & PF_FLAG_MINUS) == 0 && param.width > 1)
+		count += pf_repeat(' ', param.width - 1);
+	count += pf_write("%", 1);
+	if ((param.flags & PF_FLAG_MINUS) != 0 && param.width > 1)
+		count += pf_repeat(' ', param.width - 1);
+	return (count);
 }

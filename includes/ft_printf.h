@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/05 22:22:58 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/14 20:23:36 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/17 05:58:29 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include "libft.h"
-
+# include <limits.h>
 # include <stdio.h>
+# include <stdlib.h>
 
 # define PF_FLAG_NONE 0
 # define PF_FLAG_HASH 1
@@ -49,12 +49,13 @@ typedef struct	s_pf_param
 	t_pf_string		str;
 	int				access;
 	int				flags;
-	int				field_width;
-	int				field_width_access;
+	unsigned int	width;
+	int				width_access;
 	int				precision;
 	t_pf_modifier	modifier;
 	char			conversion;
 	int				error;
+	void			*value;
 }				t_pf_param;
 
 /*
@@ -63,18 +64,33 @@ typedef struct	s_pf_param
 
 typedef struct	s_pf_handle
 {
-	char		conversion;
-	t_pf_string	(*handle)(t_pf_param, va_list);
+	char			conversion;
+	int				(*handle)(t_pf_param, va_list);
 }				t_pf_handle;
 
 /*
 ** Handlers
 */
 
-t_pf_string		pf_handle_percent(t_pf_param param, va_list list);
+int				pf_handle_percent(t_pf_param param, va_list list);
+int				pf_handle_char(t_pf_param param, va_list list);
+int				pf_handle_string(t_pf_param param, va_list list);
+int				pf_handle_hex(t_pf_param param, va_list list);
+
+int				pf_write_chunk(const char *str, size_t len, char c,
+								t_pf_param param);
+
+/*
+** Core
+*/
 
 int				ft_printf(const char *format, ...);
+
 int				pf_parse_format(const char *str, va_list list);
+int				pf_transform(t_pf_param param, va_list list);
+
+int				pf_write(const char *str, const size_t len);
+int				pf_repeat(const char c, size_t len);
 
 int				pf_is_conversion(const char c);
 int				pf_is_modifier(const char c);
@@ -82,11 +98,18 @@ int				pf_is_flag(const char c);
 int				pf_is_valid(const char c);
 t_pf_param		pf_param(const char *str, const size_t len);
 t_pf_string		pf_string(const char *str, size_t len);
-t_pf_string		pf_transform(t_pf_param param, va_list list);
 
 /*
 ** Helper functions
 */
 
 int				pf_atoi(const char *str, int allow_neg, int *result, size_t *i);
+char			*ft_itoa(intmax_t n, int base, const char *digits);
+char			*ft_uitoa(uintmax_t n, unsigned int base, const char *digits);
+void			*ft_memalloc(size_t size);
+char			*ft_strchr(const char *s, int c);
+size_t			ft_strlen(const char *s, const size_t max);
+int				ft_isdigit(int c);
+char			*ft_strjoin(char *a, char *b);
+
 #endif

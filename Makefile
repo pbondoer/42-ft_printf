@@ -6,7 +6,7 @@
 #    By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 21:02:30 by pbondoer          #+#    #+#              #
-#    Updated: 2017/09/14 20:58:59 by pbondoer         ###   ########.fr        #
+#    Updated: 2017/09/17 03:54:53 by pbondoer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,17 @@ TEST_DIR := ./test
 SRC		:= printf.c \
 		   check.c \
 		   format.c \
-		   atoi.c \
 		   replace.c \
-		   handlers/percent.c
+		   write.c \
+		   \
+		   util/atoi.c \
+		   util/itoa.c \
+		   util/ft.c \
+		   \
+		   handlers/percent.c \
+		   handlers/char.c \
+		   handlers/string.c \
+		   handlers/hex.c
 
 OBJ		:= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
@@ -33,15 +41,12 @@ CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror
 CFLAGS	+= -O3 -march=native -pipe
 
-# libraries
-L_FT	:= ../libft
-include $(L_FT)/libft.mk
-
 # rules
 all: $(OBJ_DIR) $(PRINTF_NAME)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)/util
 	mkdir -p $(OBJ_DIR)/handlers
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c

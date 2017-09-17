@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 03:35:56 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/14 20:24:46 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/17 02:22:56 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ static int			handle_width(t_pf_param *param, const char *str, size_t *i)
 			(*i)++;
 		else
 			return (1);
-		param->field_width_access = width;
+		param->width_access = width;
 	}
 	else
-		param->field_width = width;
+		param->width = width;
 	return (0);
 }
 
@@ -86,10 +86,12 @@ static int			handle_precision(t_pf_param *param, const char *str, size_t *i)
 {
 	int precision;
 
+	param->precision = -1;
 	if (str[*i] != '.')
 		return (0);
+	param->precision = 0;
 	(*i)++;
-	if (pf_atoi(str, 1, &precision, i))
+	if (pf_atoi(str, 0, &precision, i))
 		return (1);
 	param->precision = precision;
 	return (0);
@@ -163,7 +165,7 @@ t_pf_param			get_param(const char *str, size_t len)
 	}
 
 	/*
-	printf("\nparameter: \"%.*s\"\n", str, len);
+	printf("\nparameter: \"%.*s\"\n", (int)len, str);
 	printf("access: %d\n", param.access);
 	printf("flags: %d -> ", param.flags);
 	if ((param.flags & PF_FLAG_HASH) != 0) printf("HASH ");
@@ -172,8 +174,8 @@ t_pf_param			get_param(const char *str, size_t len)
 	if ((param.flags & PF_FLAG_PLUS) != 0) printf("PLUS ");
 	if ((param.flags & PF_FLAG_SPACE) != 0) printf("SPACE ");
 	if ((param.flags & PF_FLAG_APOSTROPHE) > 0) printf("APOSTROPHE ");
-	printf("\nwidth: %d\n", param.field_width);
-	printf("width access: %d\n", param.field_width_access);
+	printf("\nwidth: %d\n", param.width);
+	printf("width access: %d\n", param.width_access);
 	printf("precision: %d\n", param.precision);
 	printf("modifier: %d\n", param.modifier);
 	printf("conversion: %c\n", param.conversion);
@@ -182,21 +184,19 @@ t_pf_param			get_param(const char *str, size_t len)
 	return (param);
 }
 
-t_pf_argument		*get_argument(const char *str, size_t start, size_t len,
-									int is_valid, va_list list)
+int		get_argument(const char *str, size_t len, int is_valid, va_list list)
 {
-	t_pf_argument	*arg;
+	//t_pf_argument	*arg;
 
-	arg = ft_memalloc(sizeof(t_pf_argument));
-	if (arg == NULL)
-		return (NULL);
-	arg->position = start;
-	arg->length = len;
+	//arg = ft_memalloc(sizeof(t_pf_argument));
+	//if (arg == NULL)
+	//	return (NULL);
+	//arg->position = start;
+	//arg->length = len;
 	if (*str == '%' && is_valid)
-		arg->str = pf_transform(get_param(str, len), list);
+		return (pf_transform(get_param(str, len), list));
 	else
-		arg->str = pf_string(str, len);
-	return (arg);
+		return (pf_write(str, len));
 }
 
 /*
@@ -208,7 +208,6 @@ int		pf_parse_format(const char *str, va_list list)
 	size_t			i;
 	size_t			start;
 	size_t			len;
-	t_pf_argument	*arg;
 	int				valid;
 	int				count;
 
@@ -235,17 +234,12 @@ int		pf_parse_format(const char *str, va_list list)
 				i++;
 
 		len = i - start;
-		arg = get_argument(str + start, start, len, valid, list);
-		if (arg->str.str && arg->str.length > 0)
-		{
-			write(1, arg->str.str, arg->str.length);
-			count += arg->str.length;
-		}
+		count += get_argument(str + start, len, valid, list);
 
 		//if (!valid)
 		//	printf("\n---> string from start %zu len %zu\n\n", start, len);
 	}
-	return (count);
+	return (count); // TODO: return the count of characters
 }
 
 /*
@@ -261,8 +255,8 @@ inline t_pf_param	pf_param(const char *str, size_t len)
 		.str = (t_pf_string){ .str = str, .length = len },
 		.access = 0,
 		.flags = 0,
-		.field_width = 0,
-		.field_width_access = 0,
+		.width = 0,
+		.width_access = 0,
 		.precision = 0,
 		.modifier = NONE,
 		.conversion = 0,
