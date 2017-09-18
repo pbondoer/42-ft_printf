@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:30:26 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/17 06:20:51 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/18 05:19:25 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,39 @@ int			pf_handle_string(t_pf_param param, va_list list)
 	return (count);
 }
 
+inline static void	set_prefix(t_pf_param param, int *rem, char **prefix)
+{
+	if ((!(param.flags & PF_FLAG_HASH) ||
+			!(param.value && *(uintmax_t *)param.value != 0))
+			&& !((param.flags & PF_FLAG_HASH) && param.conversion == 'o'))
+		return;
+	if ((param.conversion == 'x' || param.conversion == 'X'))
+	{
+		*rem = 2;
+		*prefix = (param.conversion == 'x' ? "0x" : "0X");
+	}
+	if (param.conversion == 'o')
+	{
+		*rem = 1;
+		*prefix = "0";
+	}
+}
+
 int			pf_write_chunk(const char *str, size_t len, char c,
 						t_pf_param param)
 {
 	int		count;
 	int		rem;
+	char	*prefix;
 
 	count = 0;
 	rem = 0;
-	if ((param.conversion == 'x' || param.conversion == 'X') && 
-			(param.flags & PF_FLAG_HASH) &&
-			(param.value && *(uintmax_t *)param.value != 0))
-		rem = 2;
+	set_prefix(param, &rem, &prefix);
 	if (!(param.flags & PF_FLAG_ZERO) && !(param.flags & PF_FLAG_MINUS)
 		&& param.width > len + rem)
 		count += pf_repeat(c, param.width - len - rem);
-	if ((param.conversion == 'x' || param.conversion == 'X') && 
-			(param.flags & PF_FLAG_HASH) &&
-			(param.value && *(uintmax_t *)param.value != 0))
-		count += pf_write((param.conversion == 'x' ? "0x" : "0X"), 2);
+	if (rem)
+		count += pf_write(prefix, rem);
 	if ((param.flags & PF_FLAG_ZERO) && !(param.flags & PF_FLAG_MINUS)
 		&& param.width > len + rem)
 		count += pf_repeat(c, param.width - len - rem);

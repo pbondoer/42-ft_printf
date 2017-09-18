@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/05 22:22:58 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/17 05:58:29 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/18 05:21:06 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int				pf_handle_string(t_pf_param param, va_list list);
 int				pf_handle_hex(t_pf_param param, va_list list);
 
 int				pf_write_chunk(const char *str, size_t len, char c,
-								t_pf_param param);
+					t_pf_param param);
 
 /*
 ** Core
@@ -104,8 +104,10 @@ t_pf_string		pf_string(const char *str, size_t len);
 */
 
 int				pf_atoi(const char *str, int allow_neg, int *result, size_t *i);
-char			*ft_itoa(intmax_t n, int base, const char *digits);
-char			*ft_uitoa(uintmax_t n, unsigned int base, const char *digits);
+char			*ft_itoa(intmax_t n, int base, const char *digits,
+					size_t precision, char sign);
+char			*ft_uitoa(uintmax_t n, unsigned int base, const char *digits,
+					size_t precision);
 void			*ft_memalloc(size_t size);
 char			*ft_strchr(const char *s, int c);
 size_t			ft_strlen(const char *s, const size_t max);
