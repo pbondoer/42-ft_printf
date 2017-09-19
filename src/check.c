@@ -6,28 +6,28 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 02:09:04 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/02/08 03:36:06 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/19 03:59:21 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-inline int			pf_is_conversion(const char c)
+inline extern int			pf_is_conversion(const char c)
 {
 	return (ft_strchr("dDioOuUxXeEfFgGaAcCsSpn%", c) != NULL);
 }
 
-inline int			pf_is_modifier(const char c)
+inline extern int			pf_is_modifier(const char c)
 {
 	return (ft_strchr("hljz", c) != NULL);
 }
 
-inline int			pf_is_flag(const char c)
+inline extern int			pf_is_flag(const char c)
 {
 	return (ft_strchr("#0-+' ", c) != NULL);
 }
 
-inline int			pf_is_precision(const char c)
+inline extern int			pf_is_precision(const char c)
 {
 	return (ft_strchr("$*.", c) != NULL);
 }

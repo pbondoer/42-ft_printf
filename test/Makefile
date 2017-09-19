@@ -6,7 +6,7 @@
 #    By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/05 02:12:10 by pbondoer          #+#    #+#              #
-#    Updated: 2017/09/17 00:51:36 by pbondoer         ###   ########.fr        #
+#    Updated: 2017/09/19 05:41:22 by pbondoer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ OBJ		:= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
 # compiler and flags
 CC		:= gcc
-CFLAGS	:= -Wall -Wextra -Werror
-CFLAGS	+= -O3 -march=native -pipe
+#CFLAGS	:= -Wall -Wextra -Werror
+CFLAGS	:= -O3 -march=native -pipe
 
 L_PRINTF	:= $(LIB_DIR)/printf
 include $(L_PRINTF)/libprintf.mk

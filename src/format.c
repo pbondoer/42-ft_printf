@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 03:35:56 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/17 02:22:56 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/19 05:44:53 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,23 +101,24 @@ static int			handle_modifier(t_pf_param *param, const char *str, size_t *i)
 {
 	t_pf_modifier	m;
 
+	m = NONE;
 	if (!pf_is_modifier(str[*i]))
 		return (0);
 	if (str[*i] == 'l')
 	{
-		if (str[*i + 1] == 'l' && (*i)++)
+		if (str[*i + 1] == 'l' && ++(*i))
 			m = LL;
 		else
 			m = L;
 	}
-	if (str[*i] == 'h')
+	else if (str[*i] == 'h')
 	{
-		if (str[*i + 1] == 'h' && (*i)++)
+		if (str[*i + 1] == 'h' && ++(*i))
 			m = HH;
 		else
 			m = H;
 	}
-	if (str[*i] == 'j')
+	else if (str[*i] == 'j')
 		m = J;
 	else if (str[*i] == 'z')
 		m = Z;
@@ -162,6 +163,26 @@ t_pf_param			get_param(const char *str, size_t len)
 			break;
 		}
 		i++;
+	}
+
+	if (param.conversion == 'i')
+		param.conversion = 'd';
+	if (param.conversion == 'p')
+		param.modifier = LL;
+	if (param.conversion == 'D')
+	{
+		param.conversion = 'd';
+		param.modifier = L;
+	}
+	if (param.conversion == 'O')
+	{
+		param.conversion = 'o';
+		param.modifier = L;
+	}
+	if (param.conversion == 'U')
+	{
+		param.conversion = 'u';
+		param.modifier = L;
 	}
 
 	/*
@@ -217,17 +238,18 @@ int		pf_parse_format(const char *str, va_list list)
 	{
 		start = i;
 		valid = 0;
-		if (str[i] == '%' && str[i + 1])
+		if (str[i] == '%')
 		{
 			i++;
+			if (!str[i])
+				continue;
 			while (str[i] && pf_is_valid(str[i]) && !pf_is_conversion(str[i]))
 				i++;
 			valid = pf_is_valid(str[i]);
 			if (valid)
 				i++;
 			else
-				while (str[i] && str[i] != '%')
-					i++;
+				continue;
 		}
 		else
 			while (str[i] && str[i] != '%')
@@ -235,11 +257,8 @@ int		pf_parse_format(const char *str, va_list list)
 
 		len = i - start;
 		count += get_argument(str + start, len, valid, list);
-
-		//if (!valid)
-		//	printf("\n---> string from start %zu len %zu\n\n", start, len);
 	}
-	return (count); // TODO: return the count of characters
+	return (count);
 }
 
 /*
