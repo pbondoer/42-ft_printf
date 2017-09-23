@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/05 22:22:58 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/18 23:40:34 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/09/23 15:34:31 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdint.h>
 
 # define PF_FLAG_NONE 0
 # define PF_FLAG_HASH 1
