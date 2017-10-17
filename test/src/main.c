@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/05 22:15:40 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 08:41:01 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 09:17:52 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int		main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-	f = "%d\n";
-	ft_printf(f, 42);
-	printf(f, 42);
+	f = "@moulitest: %.o %.0o";
+	ft_printf(f, 0, 0);
 	return (0);
 }

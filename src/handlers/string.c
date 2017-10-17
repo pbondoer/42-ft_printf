@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:30:26 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 08:28:36 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 09:18:38 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int					pf_handle_string(t_pf_param param, va_list list)
 		param.precision = INT_MAX;
 	if (param.precision > (int)len)
 		param.precision = len;
-	count += pf_write_chunk(str, param.precision, param);
+	count += pf_write_chunk(str, 0, param.precision, param);
 	return (count);
 }
 
@@ -51,7 +51,7 @@ inline static void	set_prefix(t_pf_param param, int *rem, char **prefix)
 	}
 }
 
-int					pf_write_chunk(const char *str, size_t len,
+int					pf_write_chunk(const char *str, int f, size_t len,
 						t_pf_param param)
 {
 	int		count;
@@ -63,7 +63,7 @@ int					pf_write_chunk(const char *str, size_t len,
 	rem = 0;
 	p = (param.conversion != 'd' && param.flags & PF_FLAG_ZERO ? '0' : ' ');
 	set_prefix(param, &rem, &prefix);
-	if (param.conversion == 'o' && str[0] == '0')
+	if (param.conversion == 'o' && str && str[0] == '0')
 		rem = 0;
 	param.width -= rem;
 	if (!(param.flags & PF_FLAG_MINUS) && param.width > len)
@@ -73,5 +73,7 @@ int					pf_write_chunk(const char *str, size_t len,
 	count += pf_write(str, len);
 	if ((param.flags & PF_FLAG_MINUS) && param.width > len)
 		count += pf_repeat(' ', param.width - len);
+	if (f)
+		free((void *)str);
 	return (count);
 }

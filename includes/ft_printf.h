@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/05 22:22:58 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 08:37:58 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 09:08:40 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int				pf_handle_char(t_pf_param param, va_list list);
 int				pf_handle_string(t_pf_param param, va_list list);
 int				pf_handle_hex(t_pf_param param, va_list list);
 
-int				pf_write_chunk(const char *str, size_t len, t_pf_param param);
+int				pf_write_chunk(const char *str, int free, size_t len,
+					t_pf_param param);
 
 /*
 ** Core

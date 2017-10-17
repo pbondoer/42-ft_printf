@@ -6,7 +6,7 @@
 #    By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 21:02:30 by pbondoer          #+#    #+#              #
-#    Updated: 2017/10/17 08:37:07 by pbondoer         ###   ########.fr        #
+#    Updated: 2017/10/17 08:46:06 by pbondoer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,10 @@ CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror
 CFLAGS	+= -O3 -march=native -pipe
 
+NAME	:= $(PRINTF_NAME)
+
 # rules
-all: $(OBJ_DIR) $(PRINTF_NAME)
+all: $(NAME)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
@@ -55,7 +57,7 @@ $(OBJ_DIR):
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIB_INC) -o $@ -c $<
 
-$(PRINTF_NAME): $(OBJ)
+$(NAME): $(OBJ_DIR) $(OBJ)
 	ar rc $(PRINTF_NAME) $(OBJ)
 	ranlib $(PRINTF_NAME)
 

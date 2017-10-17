@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 00:26:36 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 07:35:12 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 09:16:28 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ extern inline size_t	ft_strlen(const char *s, const size_t max)
 {
 	size_t i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i] && i < max)
 		i++;
@@ -53,18 +55,4 @@ extern inline size_t	ft_strlen(const char *s, const size_t max)
 extern inline int		ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
-}
-
-extern inline char		*ft_strjoin(char *a, char *b)
-{
-	char	*ret;
-	int		i;
-
-	ret = ft_memalloc(ft_strlen(a, INT_MAX) + ft_strlen(b, INT_MAX) + 1);
-	i = 0;
-	while (*a)
-		ret[i++] = *(a++);
-	while (*b)
-		ret[i++] = *(b++);
-	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:51:49 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 08:38:48 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 09:13:16 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ inline static int		s_handle(t_pf_param param, va_list list)
 	else
 		sign = 0;
 	if (param.precision == 0 && n == 0)
-		str = "";
+		str = NULL;
 	else
 		str = ft_itoa(n, param, sign);
-	count += pf_write_chunk(str, ft_strlen(str, INT_MAX), param);
+	count += pf_write_chunk(str, str != NULL, ft_strlen(str, INT_MAX), param);
 	return (count);
 }
 
@@ -81,7 +81,7 @@ static inline intmax_t	handle_mod(t_pf_param param, va_list list)
 int						pf_handle_hex(t_pf_param param, va_list list)
 {
 	uintmax_t		n;
-	char			*str;
+	char			*s;
 	int				count;
 	int				base;
 	int				size;
@@ -97,12 +97,12 @@ int						pf_handle_hex(t_pf_param param, va_list list)
 	param.value = &n;
 	if ((param.precision == 0 && n == 0) || (n == 0 && param.conversion == 'o'
 				&& (param.flags & PF_FLAG_HASH)))
-		str = "";
+		s = NULL;
 	else
-		str = ft_uitoa(n, base, (param.conversion == 'X' ? "0123456789ABCDEF" :
+		s = ft_uitoa(n, base, (param.conversion == 'X' ? "0123456789ABCDEF" :
 				"0123456789abcdef"), pf_max(param.precision, ((param.flags &
 				PF_FLAG_ZERO) && !(param.flags & PF_FLAG_MINUS) ?
 				param.width - size : 0)));
-	count += pf_write_chunk(str, ft_strlen(str, INT_MAX), param);
+	count += pf_write_chunk(s, s != NULL, ft_strlen(s, INT_MAX), param);
 	return (count);
 }
