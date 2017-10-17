@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/05 22:22:58 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/23 15:34:31 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 08:37:58 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,14 @@ int				pf_is_flag(const char c);
 int				pf_is_valid(const char c);
 t_pf_param		pf_param(const char *str, const size_t len);
 t_pf_string		pf_string(const char *str, size_t len);
+t_pf_param		pf_get_param(const char *str, size_t len);
 
 /*
 ** Helper functions
 */
 
 int				pf_atoi(const char *str, int allow_neg, int *result, size_t *i);
-char			*ft_itoa(intmax_t n, int base, const char *digits,
-					t_pf_param param, char sign);
+char			*ft_itoa(intmax_t n, t_pf_param param, char sign);
 char			*ft_uitoa(uintmax_t n, unsigned int base, const char *digits,
 					size_t precision);
 void			*ft_memalloc(size_t size);
@@ -113,5 +113,7 @@ char			*ft_strchr(const char *s, int c);
 size_t			ft_strlen(const char *s, const size_t max);
 int				ft_isdigit(int c);
 char			*ft_strjoin(char *a, char *b);
+int				pf_max(int a, int b);
+int				pf_get_base(char c);
 
 #endif

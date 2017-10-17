@@ -6,17 +6,17 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:30:26 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 07:08:11 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 08:28:36 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int			pf_handle_string(t_pf_param param, va_list list)
+int					pf_handle_string(t_pf_param param, va_list list)
 {
-	char *str;
-	size_t len;
-	int count;
+	char	*str;
+	size_t	len;
+	int		count;
 
 	count = 0;
 	str = va_arg(list, char *);
@@ -37,21 +37,22 @@ inline static void	set_prefix(t_pf_param param, int *rem, char **prefix)
 			(param.value && *(uintmax_t *)param.value == 0))
 			&& !((param.flags & PF_FLAG_HASH) && param.conversion == 'o')
 			&& !(param.conversion == 'p'))
-		return;
+		return ;
 	if (param.conversion == 'x' || param.conversion == 'X' ||
 			param.conversion == 'p')
 	{
 		*rem = 2;
 		*prefix = (param.conversion == 'X' ? "0X" : "0x");
 	}
-	if (param.conversion == 'o') 
+	if (param.conversion == 'o')
 	{
 		*rem = 1;
 		*prefix = "0";
 	}
 }
 
-int			pf_write_chunk(const char *str, size_t len, t_pf_param param)
+int					pf_write_chunk(const char *str, size_t len,
+						t_pf_param param)
 {
 	int		count;
 	int		rem;

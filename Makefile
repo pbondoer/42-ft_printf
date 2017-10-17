@@ -6,7 +6,7 @@
 #    By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 21:02:30 by pbondoer          #+#    #+#              #
-#    Updated: 2017/10/17 07:28:43 by pbondoer         ###   ########.fr        #
+#    Updated: 2017/10/17 08:37:07 by pbondoer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,12 +22,15 @@ TEST_DIR := ./test
 SRC		:= printf.c \
 		   check.c \
 		   format.c \
+		   handle.c \
+		   get_param.c \
 		   replace.c \
 		   write.c \
 		   \
 		   util/atoi.c \
 		   util/itoa.c \
 		   util/ft.c \
+		   util/number.c \
 		   \
 		   handlers/percent.c \
 		   handlers/char.c \

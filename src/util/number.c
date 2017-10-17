@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   percent.c                                          :+:      :+:    :+:   */
+/*   number.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/14 18:53:18 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 08:27:40 by pbondoer         ###   ########.fr       */
+/*   Created: 2017/10/17 08:35:30 by pbondoer          #+#    #+#             */
+/*   Updated: 2017/10/17 08:35:45 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int			pf_handle_percent(t_pf_param param, va_list list)
+int		pf_max(int a, int b)
 {
-	int		count;
-	char	p;
+	return (a > b ? a : b);
+}
 
-	(void)list;
-	p = (param.flags & PF_FLAG_ZERO ? '0' : ' ');
-	count = 0;
-	if ((param.flags & PF_FLAG_MINUS) == 0 && param.width > 1)
-		count += pf_repeat(p, param.width - 1);
-	count += pf_write("%", 1);
-	if ((param.flags & PF_FLAG_MINUS) != 0 && param.width > 1)
-		count += pf_repeat(' ', param.width - 1);
-	return (count);
+int		pf_get_base(char c)
+{
+	if (c == 'X' || c == 'x' || c == 'p')
+		return (16);
+	else if (c == 'o')
+		return (8);
+	else
+		return (10);
 }

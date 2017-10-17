@@ -6,13 +6,13 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:40:29 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 07:06:41 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 07:57:39 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static size_t	udigit_count(uintmax_t n, unsigned int base)
+static size_t		udigit_count(uintmax_t n, unsigned int base)
 {
 	size_t i;
 
@@ -27,7 +27,7 @@ static size_t	udigit_count(uintmax_t n, unsigned int base)
 	return (i);
 }
 
-char			*ft_uitoa(uintmax_t n, unsigned int base, const char *digits,
+char				*ft_uitoa(uintmax_t n, unsigned int base, const char *dig,
 						size_t precision)
 {
 	size_t		count;
@@ -41,14 +41,14 @@ char			*ft_uitoa(uintmax_t n, unsigned int base, const char *digits,
 		return (NULL);
 	while (count > 0)
 	{
-		str[count - 1] = digits[n % base];
+		str[count - 1] = dig[n % base];
 		count--;
 		n /= base;
 	}
 	return (str);
 }
 
-static size_t	digit_count(intmax_t n, int base)
+static size_t		digit_count(intmax_t n, int base)
 {
 	size_t i;
 
@@ -63,16 +63,35 @@ static size_t	digit_count(intmax_t n, int base)
 	return (i);
 }
 
-char			*ft_itoa(intmax_t n, int base, const char *digits,
-							t_pf_param param, char sign)
+static inline char	*itoa_inner(int count, char sign, char neg, uintmax_t v)
+{
+	static char	*dig = "0123456789";
+	char		*str;
+	int			base;
+
+	base = 10;
+	str = ft_memalloc(count + neg + 1);
+	if (str == NULL)
+		return (NULL);
+	if (sign)
+		str[0] = sign;
+	while (count > 0)
+	{
+		str[count + neg - 1] = dig[v % base];
+		count--;
+		v /= base;
+	}
+	return (str);
+}
+
+char				*ft_itoa(intmax_t n, t_pf_param param, char sign)
 {
 	int			count;
-	char		*str;
 	char		neg;
 	uintmax_t	v;
 
 	neg = (n < 0 || sign ? 1 : 0);
-	count = digit_count(n, base);
+	count = digit_count(n, 10);
 	if (count < param.precision)
 		count = param.precision;
 	if (!(param.flags & PF_FLAG_MINUS) && (param.flags & PF_FLAG_ZERO)
@@ -82,19 +101,8 @@ char			*ft_itoa(intmax_t n, int base, const char *digits,
 		if (param.precision > 0)
 			count = param.precision;
 	}
-	str = ft_memalloc(count + neg + 1);
-	if (str == NULL)
-		return (NULL);
 	v = (n < 0 ? -n : n);
 	if (n < 0)
 		sign = '-';
-	if (sign)
-		str[0] = sign;
-	while (count > 0)
-	{
-		str[count + neg - 1] = digits[v % base];
-		count--;
-		v /= base;
-	}
-	return (str);
+	return (itoa_inner(count, sign, neg, v));
 }

@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:28:28 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 03:48:18 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 08:27:18 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int			pf_handle_char(t_pf_param param, va_list list)
 {
-	int count;
-	int c;
-	char p;
+	int		count;
+	int		c;
+	char	p;
 
 	p = (param.flags & PF_FLAG_ZERO ? '0' : ' ');
 	count = 0;

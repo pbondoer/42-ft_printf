@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 02:09:04 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/19 03:59:21 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 07:33:44 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ inline extern int			pf_is_precision(const char c)
 	return (ft_strchr("$*.", c) != NULL);
 }
 
-inline int			pf_is_valid(const char c)
+inline int					pf_is_valid(const char c)
 {
 	return (pf_is_conversion(c) || pf_is_modifier(c) || pf_is_flag(c) ||
 			ft_isdigit(c) || pf_is_precision(c));

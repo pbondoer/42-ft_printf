@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 00:26:36 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/17 04:37:57 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 07:35:12 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,5 @@ extern inline char		*ft_strjoin(char *a, char *b)
 		ret[i++] = *(a++);
 	while (*b)
 		ret[i++] = *(b++);
-
 	return (ret);
 }

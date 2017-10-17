@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/09 01:50:13 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 04:59:30 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 07:33:12 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@
 ** Replaces conversion with string (one param)
 */
 
-#define CONV 12
-
 int			pf_transform(t_pf_param param, va_list list)
 {
-	static t_pf_handle	(handle[CONV]) = {
+	static t_pf_handle	(handle[12]) = {
 		{ .conversion = 's', .handle = pf_handle_string },
 		{ .conversion = 'S', .handle = pf_handle_string },
 		{ .conversion = 'c', .handle = pf_handle_char },
@@ -34,19 +32,13 @@ int			pf_transform(t_pf_param param, va_list list)
 		{ .conversion = 'U', .handle = pf_handle_hex },
 		{ .conversion = 'o', .handle = pf_handle_hex }
 	};
-	int i;
+	int					i;
 
 	if (param.error)
 		return (0);
-
-	i = 0;
-	while (i < CONV)
-	{
+	i = -1;
+	while (++i < 12)
 		if (param.conversion == handle[i].conversion)
-		{
 			return (handle[i].handle(param, list));
-		}
-		i++;
-	}
 	return (0);
 }
