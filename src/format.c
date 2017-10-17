@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 03:35:56 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/19 05:44:53 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 04:45:58 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,16 @@ t_pf_param			get_param(const char *str, size_t len)
 	if (param.conversion == 'D')
 	{
 		param.conversion = 'd';
+		param.modifier = L;
+	}
+	if (param.conversion == 'S')
+	{
+		param.conversion = 's';
+		param.modifier = L;
+	}
+	if (param.conversion == 'C')
+	{
+		param.conversion = 'c';
 		param.modifier = L;
 	}
 	if (param.conversion == 'O')

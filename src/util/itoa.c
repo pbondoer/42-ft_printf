@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:40:29 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/09/19 04:49:25 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 07:06:41 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ static size_t	udigit_count(uintmax_t n, unsigned int base)
 {
 	size_t i;
 
-	i = 1;
-	while (n >= base)
+	i = 0;
+	if (n == 0)
+		return (1);
+	while (n)
 	{
 		i++;
 		n /= base;
