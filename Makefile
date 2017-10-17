@@ -6,7 +6,7 @@
 #    By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 21:02:30 by pbondoer          #+#    #+#              #
-#    Updated: 2017/09/19 03:58:07 by pbondoer         ###   ########.fr        #
+#    Updated: 2017/10/17 07:28:43 by pbondoer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ OBJ		:= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 # compiler
 CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror
-CFLAGS	+= -O1 -march=native -pipe
+CFLAGS	+= -O3 -march=native -pipe
 
 # rules
 all: $(OBJ_DIR) $(PRINTF_NAME)

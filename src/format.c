@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 03:35:56 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 04:45:58 by pbondoer         ###   ########.fr       */
+/*   Updated: 2017/10/17 07:21:24 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,10 +252,10 @@ int		pf_parse_format(const char *str, va_list list)
 		{
 			i++;
 			if (!str[i])
-				continue;
+				break;
 			while (str[i] && pf_is_valid(str[i]) && !pf_is_conversion(str[i]))
 				i++;
-			valid = pf_is_valid(str[i]);
+			valid = str[i] && pf_is_valid(str[i]);
 			if (valid)
 				i++;
 			else
