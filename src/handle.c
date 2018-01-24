@@ -6,12 +6,13 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/17 08:21:00 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 08:22:23 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:05:02 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "handlers.h"
+#include "helpers.h"
 
 int			handle_access(t_pf_param *param, const char *str, size_t *i)
 {

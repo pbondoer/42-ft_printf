@@ -6,11 +6,12 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 06:45:20 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 07:34:21 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:04:45 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "helpers.h"
 
 int		pf_atoi(const char *str, int allow_neg, int *result, size_t *i)
 {

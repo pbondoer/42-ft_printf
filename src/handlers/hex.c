@@ -6,11 +6,12 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:51:49 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 09:13:16 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:03:48 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "helpers.h"
 
 inline static intmax_t	s_handle_mod(t_pf_param param, va_list list)
 {

@@ -6,11 +6,12 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:40:29 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 07:57:39 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:05:16 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "helpers.h"
 
 static size_t		udigit_count(uintmax_t n, unsigned int base)
 {

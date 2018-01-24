@@ -6,11 +6,12 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 02:09:04 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 07:33:44 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:03:30 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "helpers.h"
 
 inline extern int			pf_is_conversion(const char c)
 {

@@ -6,11 +6,12 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:30:26 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 09:18:38 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:04:32 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "helpers.h"
 
 int					pf_handle_string(t_pf_param param, va_list list)
 {
