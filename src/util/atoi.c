@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 06:45:20 by pbondoer          #+#    #+#             */
-/*   Updated: 2018/01/24 18:04:45 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:07:07 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		pf_atoi(const char *str, int allow_neg, int *result, size_t *i)
 			return (1);
 	}
 	nbr = 0;
-	while (ft_isdigit(str[*i]))
+	while (pf_isdigit(str[*i]))
 	{
 		nbr = nbr * 10 + (str[*i] - '0');
 		(*i)++;

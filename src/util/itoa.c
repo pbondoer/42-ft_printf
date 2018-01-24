@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:40:29 by pbondoer          #+#    #+#             */
-/*   Updated: 2018/01/24 18:05:16 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:06:57 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static size_t		udigit_count(uintmax_t n, unsigned int base)
 	return (i);
 }
 
-char				*ft_uitoa(uintmax_t n, unsigned int base, const char *dig,
+char				*pf_uitoa(uintmax_t n, unsigned int base, const char *dig,
 						size_t precision)
 {
 	size_t		count;
@@ -37,7 +37,7 @@ char				*ft_uitoa(uintmax_t n, unsigned int base, const char *dig,
 	count = udigit_count(n, base);
 	if (count < precision)
 		count = precision;
-	str = ft_memalloc(count + 1);
+	str = pf_memalloc(count + 1);
 	if (str == NULL)
 		return (NULL);
 	while (count > 0)
@@ -71,7 +71,7 @@ static inline char	*itoa_inner(int count, char sign, char neg, uintmax_t v)
 	int			base;
 
 	base = 10;
-	str = ft_memalloc(count + neg + 1);
+	str = pf_memalloc(count + neg + 1);
 	if (str == NULL)
 		return (NULL);
 	if (sign)
@@ -85,7 +85,7 @@ static inline char	*itoa_inner(int count, char sign, char neg, uintmax_t v)
 	return (str);
 }
 
-char				*ft_itoa(intmax_t n, t_pf_param param, char sign)
+char				*pf_itoa(intmax_t n, t_pf_param param, char sign)
 {
 	int			count;
 	char		neg;

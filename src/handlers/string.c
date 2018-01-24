@@ -6,7 +6,7 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 03:30:26 by pbondoer          #+#    #+#             */
-/*   Updated: 2018/01/24 18:04:32 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:08:42 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int					pf_handle_string(t_pf_param param, va_list list)
 	str = va_arg(list, char *);
 	if (str == NULL)
 		str = "(null)";
-	len = ft_strlen(str, INT_MAX);
+	len = pf_strlen(str, INT_MAX);
 	if (param.precision == -1)
 		param.precision = INT_MAX;
 	if (param.precision > (int)len)

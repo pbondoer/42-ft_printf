@@ -6,13 +6,13 @@
 /*   By: pbondoer <pbondoer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/17 00:26:36 by pbondoer          #+#    #+#             */
-/*   Updated: 2017/10/17 09:16:28 by pbondoer         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:06:43 by pbondoer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-extern inline void		*ft_memalloc(size_t size)
+extern inline void		*pf_memalloc(size_t size)
 {
 	void *ptr;
 
@@ -27,7 +27,7 @@ extern inline void		*ft_memalloc(size_t size)
 	return (ptr);
 }
 
-extern inline char		*ft_strchr(const char *s, int c)
+extern inline char		*pf_strchr(const char *s, int c)
 {
 	while (*s)
 	{
@@ -40,7 +40,7 @@ extern inline char		*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-extern inline size_t	ft_strlen(const char *s, const size_t max)
+extern inline size_t	pf_strlen(const char *s, const size_t max)
 {
 	size_t i;
 
@@ -52,7 +52,7 @@ extern inline size_t	ft_strlen(const char *s, const size_t max)
 	return (i);
 }
 
-extern inline int		ft_isdigit(int c)
+extern inline int		pf_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
 }
